@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Improve Unraid Docker
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Improve Unraid Docker UI.
 // @author       libook
 // @match        */Docker/UpdateContainer?*
@@ -10,28 +10,23 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
-    const callback = () => {
-
+    {
         let styleString = '';
 
         // Change background of dl
-        {
-            styleString+=`
+
+        styleString += `
                 dt {
                     text-align: right;
                     margin-right: 1em;
                     padding-top: 4px;
                 }
             `;
-        }
 
-        // Labeling Docker config type
-        {
-
-            styleString += `
+        styleString += `
                 .user-docker-attr-type-path:before {
                     content: "📁";
                 }
@@ -46,6 +41,16 @@
                 }
             `;
 
+        const styleElement = document.createElement('style');
+        styleElement.innerHTML = styleString;
+        document.head.append(styleElement);
+    }
+
+    const callback = () => {
+
+        // Labeling Docker config type
+        {
+
             const TYPE_REGEXP_MAP = {
                 "PATH": /^Container Path:/,
                 "PORT": /^Container Port:/,
@@ -54,7 +59,9 @@
             };
             [
                 ...document.querySelectorAll('div.config_always > dl > dd > span > span'),
-                ...document.querySelectorAll('div.config_advanced > dl > dd > span > span')
+                ...document.querySelectorAll('div.config_always-hide > dl > dd > span > span'),
+                ...document.querySelectorAll('div.config_advanced > dl > dd > span > span'),
+                ...document.querySelectorAll('div.config_advanced-hide > dl > dd > span > span'),
             ].forEach(item => {
                 let finalType = null;
 
@@ -69,12 +76,6 @@
                     labelElement.classList.add(`user-docker-attr-type-${finalType}`);
                 }
             })
-        }
-
-        {
-            const styleElement = document.createElement('style');
-            styleElement.innerHTML = styleString;
-            document.head.append(styleElement);
         }
 
     };
@@ -105,6 +106,5 @@
         // Start observing the target node for configured mutations
         observer.observe(targetNode, config);
     }
-
 
 })();

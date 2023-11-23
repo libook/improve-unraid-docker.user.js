@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Improve Unraid Docker
+// @name         Unraid Docker Improve
 // @namespace    http://tampermonkey.net/
 // @version      1.1
 // @description  Improve Unraid Docker UI.

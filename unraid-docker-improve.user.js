@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Unraid Docker Improve
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Improve Unraid Docker UI.
 // @author       libook
 // @match        */Docker/UpdateContainer?*
@@ -15,6 +15,13 @@
 
     {
         let styleString = '';
+
+        // Make input wider
+        styleString += `
+                #canvas input[type="text"] {
+                    width: 100%;
+                }
+            `;
 
         // Change background of dl
 
